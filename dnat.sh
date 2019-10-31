@@ -6,6 +6,7 @@
 base=/etc/dnat
 mkdir $base 2>/dev/null
 conf=$base/conf
+firstAfterBoot=1
 
 
 ####
@@ -108,8 +109,13 @@ dnatIfNeed(){
         local last=`cat $base/${1}IP`
         [ "$last" != "$remote" ]&&needNat=1&&echo IP变化 进行nat
         else
-        echo 不存在强制nat
+        # echo 不存在强制nat
         needNat=1
+        fi
+
+        if [ "$firstAfterBoot" = "1" ];then
+            echo 第一次运行，强制刷新nat
+            needNat=1
         fi
 
         echo $remote >$base/${1}IP
@@ -138,5 +144,6 @@ echo "###########################################################"
 iptables -L PREROUTING -n -t nat --line-number
 iptables -L POSTROUTING -n -t nat --line-number
 echo "###########################################################"
+firstAfterBoot=0
 sleep 60
 done
