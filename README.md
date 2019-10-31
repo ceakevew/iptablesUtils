@@ -7,10 +7,12 @@ https://github.com/arloor/iptablesUtils
 
 2、修改 dnat.sh 下载逻辑，变更dnat.sh的下载地址，避免github raw dns污染导致异常
 
+3、添加 gitlab 镜像仓库
+
 ## 用法
 
 ```shell
-wget -qO natcfg.sh https://raw.githubusercontent.com/wulabing/iptablesUtils/master/natcfg.sh && bash natcfg.sh
+wget -qO natcfg.sh https://gitlab.com/wulabing/iptablesUtils/raw/master/natcfg.sh && bash natcfg.sh
 ```
 
 其他内容请参考上游项目
