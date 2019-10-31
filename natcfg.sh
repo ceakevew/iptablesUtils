@@ -1,3 +1,4 @@
+#!/bin/bash
 red="\033[31m"
 black="\033[0m"
 
@@ -11,13 +12,14 @@ echo -e "${red}用途${black}: 便捷的设置iptables端口转发"
 echo -e "${red}注意1${black}: 到域名的转发规则在添加后需要等待2分钟才会生效，且在机器重启后仍然有效"
 echo -e "${red}注意2${black}: 到IP的转发规则在重启后会失效，这是iptables的特性"
 echo
+# github raw dns污染，修改dnat的获取地址
 setupService(){
-    wget -qO /usr/local/bin/dnat.sh https://raw.githubusercontent.com/arloor/iptablesUtils/master/dnat.sh||{
-        echo "脚本不存在，请通过github提交issue通知作者"
-        exit 1
-    }
-    echo 
-
+    if [[ ! -f /usr/local/bin/dnat.sh ]];then
+        wget -qO /usr/local/bin/dnat.sh https://gitlab.com/wulabing/iptablesUtils/raw/master/dnat.sh ||{
+            echo "脚本不存在，请通过github提交issue通知作者"
+            exit 1
+        }
+    fi
 
 cat > /lib/systemd/system/dnat.service <<\EOF
 [Unit]
@@ -44,7 +46,8 @@ service dnat start > /dev/null 2>&1
 
 
 ## 获取本机地址
-localIP=$(curl -4 ip.sb)
+# 修改 ipv4 公网获取
+localIP=$(curl -4 ip.sb) >/dev/null 2>&1
 if [ "${localIP}" = "" ]; then
         localIP=$(ip -o -4 addr list | grep -Ev '\s(docker|lo)' | awk '{print $4}' | cut -d/ -f1|head -n 1 )
 fi
