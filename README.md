@@ -12,7 +12,7 @@ https://github.com/arloor/iptablesUtils
 ## 用法
 
 ```shell
-wget -qO natcfg.sh https://gitlab.com/wulabing/iptablesUtils/raw/master/natcfg.sh && bash natcfg.sh
+wget -qO natcfg.sh https://gitlab.com/stallr/iptablesUtils/raw/master/natcfg.sh && bash natcfg.sh
 ```
 
 其他内容请参考上游项目
