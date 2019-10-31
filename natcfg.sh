@@ -47,7 +47,8 @@ service dnat start > /dev/null 2>&1
 
 ## 获取本机地址
 # 修改 ipv4 公网获取
-localIP=$(curl -4 ip.sb) >/dev/null 2>&1
+localIP=$(curl -s -4 ip.sb) >/dev/null 2>&1
+echo "本机公网IP：${localIP}"
 if [ "${localIP}" = "" ]; then
         localIP=$(ip -o -4 addr list | grep -Ev '\s(docker|lo)' | awk '{print $4}' | cut -d/ -f1|head -n 1 )
 fi
